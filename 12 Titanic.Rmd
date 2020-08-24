@@ -51,16 +51,183 @@ theme_set(theme_bw()) # ggplot theme
 
 ```{r dataImport, warning=TRUE}
 
-test  <- read_csv("01 Data/train")
 train <- read_csv("01 Data/test.csv")
+test  <- read_csv("01 Data/train.csv")
 
-# head(customers)
-# head(pilot)
-# head(decisions)
+head(train)
+head(test)
 
-# identical(customers, customers[complete.cases(customers),])
-# all(customers == customers[complete.cases(customers),]) # :)
-# all(pilot == pilot[complete.cases(pilot),])
-# both TRUE
+identical(train, train[complete.cases(train),])
+identical(test, test[complete.cases(test),])
+
+```
+```{r trainPrep}
+
+train$Pclass	<- train$Pclass %>% as.character() %>% parse_factor(sort(unique(.))) # alphabetical order of factors
+train$Sex		<- train$Sex %>% parse_factor(sort(unique(.))) # ditto
+train$Age		<- as.integer(train$Age)
+train$SibSp		<- as.integer(train$SibSp)
+train$Parch	    <- as.integer(train$Parch)
+train$Embarked	<- train$Embarked %>% parse_factor(sort(unique(.))) # ditto
+# str(train)
+# summary(train)
+
+```
+
+```{r testPrep}
+
+test$Pclass		<- test$Pclass %>% as.character() %>% parse_factor(sort(unique(.))) # alphabetical order of factors
+test$Sex		<- test$Sex %>% parse_factor(sort(unique(.))) # ditto
+test$Age		<- as.integer(test$Age)
+test$SibSp		<- as.integer(test$SibSp)
+test$Parch	    <- as.integer(test$Parch)
+test$Embarked	<- test$Embarked %>% parse_factor(sort(unique(.))) # ditto
+# str(test)
+# summary(test)
+
+```
+
+
+# Data quality
+
+## Customer dataset and Pilot dataset structure similarity
+
+As we wanted to build the model on the **treain** dataset and use the **test** dataset for predictions, we checked if there are any significant differences in distributions of variables between those sets. 
+
+*We could had trusted our data provider, but at least simple visual inspection should be done.*
+
+### Plots
+
+We do not present every plot, as distributions in both groups were pairwise similar.
+
+```{r continousSimilarityEverything}
+
+# continuous variables
+everyCase <- bind_rows(mutate(train, 
+							  test = FALSE),
+					   mutate(select(test, -Survived),
+					   	   test = TRUE))
+everyCase %>%
+	select(where(is.double)) %>%
+	colnames() %>%
+	sapply(
+		function(X)
+		{
+			ggplot(everyCase) +
+				geom_area(aes(x = get(X), 
+							  y = ..density.., 
+							  fill = test,
+							  colour = test),
+						  alpha = 0.25,
+						  stat = "bin",
+						  bins = 93, # Rice rule
+						  position = "identity") +
+				labs(x = X) +
+				theme(legend.position = c(0.8, 0.8)) -> plot1
+				
+			ggplot(everyCase) +
+				geom_violin(aes(x = test,
+								y = get(X),
+								fill = test),
+							alpha = 0.15) +
+				geom_boxplot(aes(x = test, 
+								 y = get(X),
+								 fill = test),
+							 alpha = 0.75) +
+				labs(y = X) +
+				guides(fill = "none") -> plot2
+			
+			
+			plot_grid(plot1, plot2,  rel_widths = c(5, 3))
+		},
+		simplify = FALSE,
+		USE.NAMES = TRUE
+	) -> plotListContinous
+
+plotListContinous$Fare
+
+```
+
+```{r discreteSimilarityEverything}
+
+# discrete variables
+everyCase %>%
+	select(where(is.integer)) %>%
+	colnames() %>%
+	sapply(
+		function(X)
+		{
+			ggplot(everyCase) +
+				geom_bar(aes(x = get(X), 
+							 y = ..prop..,
+							 fill = test,
+							 colour = test),
+							 alpha = 0.4,
+							 position = "identity") +
+				labs(x = X) +
+				theme(legend.position = c(0.9, 0.8)) -> plot1
+				
+			ggplot(everyCase) +
+				geom_boxplot(aes(x = test, 
+								 y = get(X),
+								 fill = test),
+							 alpha = 0.75) +
+				labs(y = X) +
+				guides(fill = "none") -> plot2
+			
+			plot_grid(plot1, plot2,  rel_widths = c(5, 3))
+		},
+		simplify = FALSE,
+		USE.NAMES = TRUE
+	) -> plotListDiscrete
+
+everyCase %>%
+	select(where(is.factor)) %>%
+	colnames() %>%
+	sapply(
+		function(X)
+		{
+			ggplot(everyCase) +
+				geom_bar(aes(x = get(X),
+							 y =  ..prop..,
+							 group = test,
+							 fill = test,
+							 colour = test),
+						 alpha = 0.25,
+						 stat = "count",
+						 position = "identity") +
+				labs(x = X, 
+					 y = "Probability") +
+				theme(legend.position = c(0.8, 0.8))
+		},
+		simplify = FALSE,
+		USE.NAMES = TRUE
+	) -> plotListFactor
+
+plotListDiscrete$Age
+plotListFactor$Pclass
+
+# table(everyCase$test, everyCase$Sex) %>%
+# 	proportions(1)
+# Proportions do not differ to much
+# table(everyCase$test, everyCase$SibSp) %>%
+# 	proportions(1)
+# Ditto, results do not differ much.
+
+```
+
+The brief introductory analysis showed that both sets (**train** and **test**) are almost similar in terms of variables' distributions. To confirm that there could be done more analysis which might reveal some differences or conditional dependencies. As the task should not dive to deeply into the problem, we assumed that variables are not highly correlated (what was somehow proven by plots described in next paragraph).
+
+Correlation analysis is quite useful when we want to interpret results and add some **domain** knowledge to the problem. Scatter plots are great tools for that, they can be produced by **pairs** or **ggpairs** functions.
+
+
+```{r ggPairsEverything}
+
+filter(everyCase, test == FALSE) %>%
+	select(-Name, -Ticket, -Cabin, -test) %>%
+	ggpairs()
+filter(everyCase, test == TRUE) %>%
+	select(-Name, -Ticket, -Cabin, -test) %>%
+	ggpairs()
 
 ```
