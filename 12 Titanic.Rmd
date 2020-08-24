@@ -1,0 +1,66 @@
+---
+title: "Titanic"
+author: "Michał Makowski"
+output: 
+  html_notebook: 
+    toc: yes
+    toc_depth: 2
+    highlight: pygments
+    theme: cosmo
+  html_document: 
+    toc: yes
+    toc_depth: 2
+    highlight: pygments
+    theme: cosmo
+    df_print: kable
+---
+
+# Introduction
+
+This is Markdown notebook which documents my work over *Titanic* data from *Kaggle*. It is similiar to a Jupyter notebook which I've done in python.
+
+
+# Setup and preparation
+
+Data are provided in two datasets - **test** and **train**. First provides labelled data, second is used for *Kaggle* submission and testing. We loaded everything into memory and briefly checked the structure of the data. 
+
+```{r setup, message = FALSE, collapse = TRUE, strip.white = TRUE}
+
+knitr::opts_chunk$set(results = "hold", message = FALSE, strip.white = TRUE, warning = FALSE)
+
+loadLibraries <- c("tidyverse", "cowplot", "lattice", "GGally", "corrplot", "pipeR", "caTools",
+				   "themis", "ranger", "randomForest", "glmnet", "vip",
+				   "rsample", "tidymodels", "parsnip", "yardstick", "tune", "dials")
+
+installedLibraries <- loadLibraries[!loadLibraries %in% installed.packages()]
+
+for(lib in installedLibraries) 
+	install.packages(lib, dependences = TRUE)
+sapply(loadLibraries, require, character = TRUE)
+
+# for replication purposes
+# initialSeed	<- as.integer(Sys.time())
+# theSeed		<- initialSeed %% 100000
+# print(theSeed) # 41428
+
+set.seed(41428)
+theme_set(theme_bw()) # ggplot theme
+
+```
+
+
+```{r dataImport, warning=TRUE}
+
+test  <- read_csv("01 Data/train")
+train <- read_csv("01 Data/test.csv")
+
+# head(customers)
+# head(pilot)
+# head(decisions)
+
+# identical(customers, customers[complete.cases(customers),])
+# all(customers == customers[complete.cases(customers),]) # :)
+# all(pilot == pilot[complete.cases(pilot),])
+# both TRUE
+
+```
