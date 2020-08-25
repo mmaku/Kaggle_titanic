@@ -33,8 +33,6 @@ Python solution got 0.77511 accurancy on Kaggle. Nonetheless, the final score wa
 
 Distributed under the GNU GPLv3 license. See ``LICENSE`` for more information.
 
-[https://github.com/yourname/github-link](https://github.com/mmaku/)
-
 ## Contributing
 
-I believe any contributions to this project do not make sense, but feel free to use my code.  
+I believe any contributions to this project do not make sense, however feel free to use my code.  
