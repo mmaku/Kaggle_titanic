@@ -7,7 +7,7 @@
 [![made-with-python](https://img.shields.io/badge/Made%20with-RStudio%C2%AE-4AA4DE.svg?style=flat-square)](https://rstudio.com/)
 [![made-with-python](https://img.shields.io/badge/Kaggle%20score-0.77511-20BEFF.svg?style=flat-square)](https://www.kaggle.com/mmaxon/my-first-kaggle-notebook-complete-analysis/)
 
-This project is the part of my DS/ML portfolio. I chose *Titanic* dataset because of it simplicity, I had minor experience with python and that was my first end-to-end project. Firstly I was think I will end only with analysis done in python, but the I decided to add an R notebook as well.
+This project is the part of my DS/ML portfolio. I chose *Titanic* dataset because of it simplicity, I had minor experience with python and that was my first end-to-end project. Firstly I thought I would only end with analysis done in python, but later I decided to add an R notebook as well.
 
 ![](https://upload.wikimedia.org/wikipedia/commons/6/6e/St%C3%B6wer_Titanic.jpg)
 
