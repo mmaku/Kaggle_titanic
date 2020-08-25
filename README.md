@@ -18,7 +18,7 @@ I used **scikit-learn**, **pandas** and **NumPy** packages.
 
 ## R
 
-I used libraries from the **tideverse** universe. The notebook is still under development. 
+I used libraries from the **Tideverse** universe. The notebook is still under development. 
 
 ## Kaggle score
 
