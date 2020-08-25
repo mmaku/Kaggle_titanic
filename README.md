@@ -2,10 +2,10 @@
 
 >  Little data science project on popular Kaggle dataset. 
 
-[![GitHub license](https://img.shields.io/github/license/mmaku/Kaggle_titanic?style=flat-square)](https://github.com/mmaku/Kaggle_titanic/blob/master/LICENSE)
-[![made-with-python](https://img.shields.io/badge/Made%20with-python-306998.svg?style=flat-square)](https://www.python.org/)
-[![made-with-python](https://img.shields.io/badge/Made%20with-RStudio%C2%AE-4AA4DE.svg?style=flat-square)](https://rstudio.com/)
-[![made-with-python](https://img.shields.io/badge/Kaggle%20score-0.77511-20BEFF.svg?style=flat-square)](https://www.kaggle.com/mmaxon/my-first-kaggle-notebook-complete-analysis/)
+[![GitHub-license](https://img.shields.io/github/license/mmaku/Kaggle_titanic?style=flat-square)](https://github.com/mmaku/Kaggle_titanic/blob/master/LICENSE)
+[![made-with-Python](https://img.shields.io/badge/Made%20with-python-306998.svg?style=flat-square)](https://www.python.org/)
+[![made-with-RStudion](https://img.shields.io/badge/Made%20with-RStudio%C2%AE-4AA4DE.svg?style=flat-square)](https://rstudio.com/)
+[![Kaggle-score](https://img.shields.io/badge/Kaggle%20score-0.77511-20BEFF.svg?style=flat-square)](https://www.kaggle.com/mmaxon/my-first-kaggle-notebook-complete-analysis/)
 
 This project is the part of my DS/ML portfolio. I chose *Titanic* dataset because of it simplicity, I had minor experience with python and that was my first end-to-end project. Firstly I thought I would only end with analysis done in python, but later I decided to add an R notebook as well.
 
